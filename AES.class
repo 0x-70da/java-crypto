@@ -1,0 +1,51 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+
+public class AES {
+   private static final String SECRET_KEY = "my_super_secret_key_ho_ho_ho";
+   private static final String SALT = "ssshhhhhhhhhhh!!!!";
+
+   public AES() {
+   }
+
+   public static String encrypt(String var0) {
+      try {
+         byte[] var1 = new byte[16];
+         IvParameterSpec var2 = new IvParameterSpec(var1);
+         SecretKeyFactory var3 = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+         PBEKeySpec var4 = new PBEKeySpec("my_super_secret_key_ho_ho_ho".toCharArray(), "ssshhhhhhhhhhh!!!!".getBytes(), 65536, 256);
+         SecretKey var5 = var3.generateSecret(var4);
+         SecretKeySpec var6 = new SecretKeySpec(var5.getEncoded(), "AES");
+         Cipher var7 = Cipher.getInstance("AES/CBC/PKCS5Padding");
+         var7.init(1, var6, var2);
+         return Base64.getEncoder().encodeToString(var7.doFinal(var0.getBytes(StandardCharsets.UTF_8)));
+      } catch (Exception var8) {
+         System.out.println("Error while encrypting: " + String.valueOf(var8));
+         return null;
+      }
+   }
+
+   public static String decrypt(String var0) {
+      try {
+         byte[] var1 = new byte[16];
+         IvParameterSpec var2 = new IvParameterSpec(var1);
+         SecretKeyFactory var3 = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+         PBEKeySpec var4 = new PBEKeySpec("my_super_secret_key_ho_ho_ho".toCharArray(), "ssshhhhhhhhhhh!!!!".getBytes(), 65536, 256);
+         SecretKey var5 = var3.generateSecret(var4);
+         SecretKeySpec var6 = new SecretKeySpec(var5.getEncoded(), "AES");
+         Cipher var7 = Cipher.getInstance("AES/CBC/PKCS5Padding");
+         var7.init(2, var6, var2);
+         return new String(var7.doFinal(Base64.getDecoder().decode(var0)));
+      } catch (Exception var8) {
+         System.out.println("Error while decrypting: " + String.valueOf(var8));
+         return null;
+      }
+   }
+}
