@@ -1,0 +1,116 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+public class TranspositionCipher {
+   private String selectedKey;
+   private char[] sortedKey;
+   private int[] sortedKeyPos;
+
+   public TranspositionCipher() {
+      this("megabuck");
+   }
+
+   public TranspositionCipher(String var1) {
+      this.selectedKey = var1;
+      this.sortedKeyPos = new int[this.selectedKey.length()];
+      this.sortedKey = this.selectedKey.toCharArray();
+   }
+
+   private void processKey() {
+      char[] var1 = this.selectedKey.toCharArray();
+
+      for(int var2 = 0; var2 < this.selectedKey.length(); ++var2) {
+         int var3 = var2;
+
+         for(int var4 = var2; var4 < this.selectedKey.length(); ++var4) {
+            if (this.sortedKey[var3] > this.sortedKey[var4]) {
+               var3 = var4;
+            }
+         }
+
+         if (var3 != var2) {
+            char var7 = this.sortedKey[var2];
+            this.sortedKey[var2] = this.sortedKey[var3];
+            this.sortedKey[var3] = var7;
+         }
+      }
+
+      for(int var5 = 0; var5 < this.selectedKey.length(); ++var5) {
+         for(int var6 = 0; var6 < this.selectedKey.length(); ++var6) {
+            if (var1[var5] == this.sortedKey[var6]) {
+               this.sortedKeyPos[var5] = var6;
+            }
+         }
+      }
+
+   }
+
+   public String encrypt(String var1) {
+      this.processKey();
+      int var2 = var1.length() / this.selectedKey.length();
+      int var3 = var1.length() % this.selectedKey.length();
+      int var4 = var2 + (var3 == 0 ? 0 : 1);
+      int var5 = var4 * this.selectedKey.length();
+      char[][] var6 = new char[var4][this.selectedKey.length()];
+      char[] var7 = new char[var5];
+      int var8 = 0;
+      int var9 = -1;
+
+      for(int var10 = 0; var10 < var5; ++var10) {
+         ++var9;
+         if (var10 < var1.length()) {
+            if (var9 == this.selectedKey.length()) {
+               ++var8;
+               var9 = 0;
+            }
+
+            var6[var8][var9] = var1.charAt(var10);
+         } else {
+            var6[var8][var9] = '-';
+         }
+      }
+
+      int var14 = 0;
+
+      for(int var11 = 0; var11 < this.selectedKey.length(); ++var11) {
+         int var12;
+         for(var12 = 0; var12 < this.selectedKey.length() && var11 != this.sortedKeyPos[var12]; ++var12) {
+         }
+
+         for(int var13 = 0; var13 <= var8; ++var13) {
+            var7[var14++] = var6[var13][var12];
+         }
+      }
+
+      return new String(var7);
+   }
+
+   public String decrypt(String var1) {
+      this.processKey();
+      int var2 = var1.length() / this.selectedKey.length();
+      char[][] var3 = new char[var2][this.selectedKey.length()];
+      char[] var4 = var1.toCharArray();
+      int var5 = 0;
+
+      for(int var6 = 0; var6 < this.selectedKey.length(); ++var6) {
+         int var7;
+         for(var7 = 0; var7 < this.selectedKey.length() && var6 != this.sortedKeyPos[var7]; ++var7) {
+         }
+
+         for(int var8 = 0; var8 < var2; ++var8) {
+            var3[var8][var7] = var4[var5++];
+         }
+      }
+
+      char[] var10 = new char[var2 * this.selectedKey.length()];
+      int var11 = 0;
+
+      for(int var12 = 0; var12 < var2; ++var12) {
+         for(int var9 = 0; var9 < this.selectedKey.length(); ++var9) {
+            if (var3[var12][var9] != '-') {
+               var10[var11++] = var3[var12][var9];
+            }
+         }
+      }
+
+      return new String(var10, 0, var11);
+   }
+}
