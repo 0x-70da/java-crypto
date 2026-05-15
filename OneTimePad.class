@@ -1,0 +1,37 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+public class OneTimePad {
+   public OneTimePad() {
+   }
+
+   public static String encrypt(String var0, String var1) {
+      StringBuilder var2 = new StringBuilder();
+      int[] var3 = new int[var1.length()];
+
+      for(int var4 = 0; var4 < var1.length(); ++var4) {
+         var3[var4] = var0.charAt(var4) - 65 + var1.charAt(var4) - 65;
+         if (var3[var4] > 25) {
+            var3[var4] -= 26;
+         }
+
+         var2.append((char)(var3[var4] + 65));
+      }
+
+      return var2.toString();
+   }
+
+   public static String decrypt(String var0, String var1) {
+      StringBuilder var2 = new StringBuilder();
+      int[] var3 = new int[var1.length()];
+
+      for(int var4 = 0; var4 < var1.length(); ++var4) {
+         var3[var4] = var0.charAt(var4) - 65 - (var1.charAt(var4) - 65);
+         if (var3[var4] < 0) {
+            var3[var4] += 26;
+         }
+
+         var2.append((char)(var3[var4] + 65));
+      }
+
+      return var2.toString();
+   }
+}
