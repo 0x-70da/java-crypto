@@ -1,0 +1,25 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+public class Main {
+   public Main() {
+   }
+
+   public static void main(String[] var0) {
+      TranspositionCipher var1 = new TranspositionCipher("megabuck");
+      String var2 = var1.encrypt("Hello Geek");
+      String var3 = var1.decrypt(var2);
+      String var4 = "GeeksforGeeks";
+      String var5 = AES.encrypt(var4);
+      String var6 = AES.decrypt(var5);
+      String var7 = "HELLO";
+      String var8 = "MONEY";
+      String var9 = OneTimePad.encrypt(var7, var8);
+      String var10 = OneTimePad.decrypt(var9, var8);
+      System.out.println("Transposition Cipher Text: " + var2);
+      System.out.println("Transposition Decrypted: " + var3);
+      System.out.println("AES Original: " + var4);
+      System.out.println("AES Encrypted: " + var5);
+      System.out.println("AES Decrypted: " + var6);
+      System.out.println("OTP Cipher Text: " + var9);
+      System.out.println("OTP Decrypted: " + var10);
+   }
+}
